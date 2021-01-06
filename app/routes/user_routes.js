@@ -124,7 +124,7 @@ router.patch('/change-password', requireToken, (req, res, next) => {
       return user.save()
     })
     // respond with no content and status 200
-    .then(() => res.sendStatus(204))
+    .then(() => res.sendStatus(202))
     // pass any errors along to the error handler
     .catch(next)
 })
