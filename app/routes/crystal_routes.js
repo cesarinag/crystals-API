@@ -16,9 +16,9 @@ const handle404 = customErrors.handle404
 // that's owned by someone else
 const requireOwnership = customErrors.requireOwnership
 
-// this is middleware that will remove blank fields from `req.body`, e.g.
-// { example: { title: '', text: 'foo' } } -> { example: { text: 'foo' } }
-const removeBlanks = require('../../lib/remove_blank_fields')
+// // this is middleware that will remove blank fields from `req.body`, e.g.
+// // { example: { title: '', text: 'foo' } } -> { example: { text: 'foo' } }
+// const removeBlanks = require('../../lib/remove_blank_fields')
 // passing this as a second argument to `router.<verb>` will make it
 // so that a token MUST be passed for that route to be available
 // it will also set `req.user`
@@ -59,7 +59,7 @@ router.get('/crystals/:id', requireToken, (req, res, next) => {
 
 // UPDATE
 // PATCH one crystal
-router.patch('/crystals/:id', requireToken, removeBlanks, (req, res, next) => {
+router.patch('/crystals/:id', requireToken, (req, res, next) => {
   delete req.body.crystal.owner
   const id = req.params.id
   const crystalData = req.body.crystal
