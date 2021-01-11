@@ -48,12 +48,19 @@ router.post('/crystals', requireToken, (req, res, next) => {
 // GET ONE Crystal
 router.get('/crystals/:id', requireToken, (req, res, next) => {
   const id = req.params.id
+  const crystalData = req.body.crystal
+
   Crystal.findById(id)
   .then(handle404)
-  .populate('owner')
-  .then(crystal => { res.status(200).json({ crystal:crystal.toObject()})
+  // .populate('owner')
+  .then(() => {
+    return crystalData
+  })
+  .then(crystal => {
+    res.status(200).json({ crystal:crystal
+     })
 })
-.catch(next)
+  .catch(next)
 })
 
 
