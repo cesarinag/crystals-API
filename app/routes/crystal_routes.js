@@ -73,14 +73,14 @@ router.patch('/crystals/:id', requireToken, (req, res, next) => {
 // DELETE
 router.delete('/crystals/:id', requireToken, (req, res, next) => {
   const id = req.params.id
-  Crystal.findOneAndDelete({ _id:id, owner: req.user._id })
+  Crystal.findById(id)
     .then(handle404)
-    // .then(crystal => {
-    //   // throw an error if current user doesn't own `crystal`
-    //   requireOwnership(req, crystal)
-    //   // delete the crystal ONLY IF the above didn't throw
-    //   crystal.deleteOne()
-    // })
+    .then(crystal => {
+      // throw an error if current user doesn't own `crystal`
+      requireOwnership(req, crystal)
+      // delete the crystal ONLY IF the above didn't throw
+      crystal.deleteOne()
+    })
     // send back 204 and no content if the deletion succeeded
     .then(() => res.sendStatus(204))
     // if an error occurs, pass it to the handler
