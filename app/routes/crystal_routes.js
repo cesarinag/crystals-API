@@ -59,13 +59,14 @@ router.patch('/crystals/:id', requireToken, (req, res, next) => {
   const id = req.params.id
   const crystalData = req.body.crystal
 
-  Crystal.findByIdAndUpdate(id)
+  Crystal.findById(id)
   // .populate('owner')
   .then(handle404)
-  // .then(crystal => {
-  //   return crystal.updateOne(crystalData)
-  // })
-  .then(() => res.status(202).json({ crystal: crystalData }))
+  .then(crystal => {
+    requireOwnership(req, crystal)
+    return crystal.updateOne(crystalData)
+  })
+  .then(crystal => res.status(202).json({ crystal: crystalData }))
   .catch(next)
 })
 
