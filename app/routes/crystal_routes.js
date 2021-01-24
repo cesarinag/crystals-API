@@ -18,13 +18,12 @@ const requireOwnership = customErrors.requireOwnership
 // it will also set `req.user`
 const requireToken = passport.authenticate('bearer', { session: false })
 
-
 // INDEX
 // GET /crystals
 router.get('/crystals', requireToken, (req, res, next) => {
   Crystal.find()
-  .then(crystal => res.status(200).json({ crystal: crystal }))
-  .catch(next)
+    .then(crystal => res.status(200).json({ crystal: crystal }))
+    .catch(next)
 })
 
 // CREATE
@@ -33,10 +32,9 @@ router.post('/crystals', requireToken, (req, res, next) => {
   const crystalData = req.body.crystal
   crystalData.owner = req.user._id
   Crystal.create(crystalData)
-  .then(crystal => res.status(201).json({ crystal: crystal }))
-  .catch(next)
+    .then(crystal => res.status(201).json({ crystal: crystal }))
+    .catch(next)
 })
-
 
 // SHOW
 // GET ONE Crystal
@@ -44,13 +42,12 @@ router.get('/crystals/:id', requireToken, (req, res, next) => {
   const id = req.params.id
 
   Crystal.findById(id)
-  .then(handle404)
+    .then(handle404)
   // console.log(req.crystal)
-  .then(crystal =>
-    res.status(200).json({ crystal: crystal }))
-  .catch(next)
+    .then(crystal =>
+      res.status(200).json({ crystal: crystal }))
+    .catch(next)
 })
-
 
 // UPDATE
 // PATCH one crystal
@@ -61,15 +58,14 @@ router.patch('/crystals/:id', requireToken, (req, res, next) => {
 
   Crystal.findById(id)
   // .populate('owner')
-  .then(handle404)
-  .then(crystal => {
-    requireOwnership(req, crystal)
-    return crystal.updateOne(crystalData)
-  })
-  .then(crystal => res.status(202).json({ crystal: crystalData }))
-  .catch(next)
+    .then(handle404)
+    .then(crystal => {
+      requireOwnership(req, crystal)
+      return crystal.updateOne(crystalData)
+    })
+    .then(crystal => res.status(202).json({ crystal: crystalData }))
+    .catch(next)
 })
-
 
 // DELETE
 router.delete('/crystals/:id', requireToken, (req, res, next) => {
@@ -87,7 +83,5 @@ router.delete('/crystals/:id', requireToken, (req, res, next) => {
     // if an error occurs, pass it to the handler
     .catch(next)
 })
-
-
 
 module.exports = router
